@@ -2,8 +2,7 @@ package practice.ui;
 
 import practice.util.Util;
 
-import java.util.HashMap;
-import java.util.Scanner;
+import java.util.*;
 
 public class Menu {
 
@@ -11,6 +10,7 @@ public class Menu {
     private int menuInput = 0;
     private int userInput = 0;
     private boolean isMenuClosed = false;
+    private boolean isOpen = false;
     private int multiple = 100;
     private int resultado = 0;
     private HashMap<Integer, Integer> list;
@@ -115,7 +115,7 @@ public class Menu {
     private void SendMoney() {
         System.out.println("Enviando el dinero...");
 
-        boolean isOpen = true;
+        isOpen = true;
         int entrada = getUserInput();
 
         while (isOpen) {
@@ -128,6 +128,7 @@ public class Menu {
             }
         }
         printBills();
+        reInit();
     }
 
     private void cero() {
@@ -177,7 +178,7 @@ public class Menu {
     private void printBills() {
 
         for (int key : list.keySet()) {
-            System.out.printf("ENVIANDO %d PAPELETAS DE %d%n", list.get(key), key);
+            System.out.printf("ENVIANDO %d PAPELETAS DE %d = %d%n", list.get(key), key, (list.get(key) * key));
         }
     }
 
@@ -186,5 +187,11 @@ public class Menu {
         if (!list.containsKey(ballot)) list.put(ballot, quantity);
         else list.put(ballot, list.get(ballot) + quantity);
 
+    }
+
+    private void reInit(){
+        isOpen = true;
+        resultado = 0;
+        list.clear();
     }
 }
