@@ -1,6 +1,9 @@
 package practice.ui;
-import java.util.Scanner;
+
 import practice.util.Util;
+
+import java.util.HashMap;
+import java.util.Scanner;
 
 public class Menu {
 
@@ -9,6 +12,12 @@ public class Menu {
     private int userInput = 0;
     private boolean isMenuClosed = false;
     private int multiple = 100;
+    private int resultado = 0;
+    private HashMap<Integer, Integer> list;
+
+    public Menu() {
+        list = new HashMap<>();
+    }
 
     public  void showMenu(){
 
@@ -19,7 +28,7 @@ public class Menu {
         System.out.println("\033[3mDigite una opcion para continuar...\033[3m");
     }
 
-    public int getMenuInput() {
+    private int getMenuInput() {
         return menuInput;
     }
 
@@ -40,12 +49,12 @@ public class Menu {
         System.out.println(getMenuInput());
     }
 
-    public int getUserInput(){
+    private int getUserInput() {
 
         return userInput;
     }
 
-    public void setUserInput() {
+    private void setUserInput() {
 
         String userEntry = scanner.next();
 
@@ -65,19 +74,19 @@ public class Menu {
         return isMenuClosed;
     }
 
-    public  void setIsMenuClosed(boolean value){
+    private void setIsMenuClosed(boolean value) {
         isMenuClosed = value;
     }
 
-    public void exitMenu(){
+    private void exitMenu() {
         setIsMenuClosed(true);
-        System.exit(0);
         System.out.println("Vuelva pronto!");
+        System.exit(0);
+
     }
 
     private boolean isValidUserInput(){
-        if((getUserInput() >= 100 && Util.isMultipleOf(getUserInput(), multiple))&& (getUserInput() <= 10000 && Util.isMultipleOf(getUserInput(), multiple))) return true;
-        return false;
+        return (getUserInput() >= 100 && Util.isMultipleOf(getUserInput(), multiple)) && (getUserInput() <= 10000 && Util.isMultipleOf(getUserInput(), multiple));
     }
 
     public void doSomething(){
@@ -103,13 +112,79 @@ public class Menu {
         }
     }
 
-    public void SendMoney(){
+    private void SendMoney() {
         System.out.println("Enviando el dinero...");
 
+        boolean isOpen = true;
+        int entrada = getUserInput();
 
+        while (isOpen) {
+            if (resultado == entrada) {
+                isOpen = false;
+            } else if (resultado == 0) {
+                cero();
+            } else {
+                biggerThanCero();
+            }
+        }
+        printBills();
     }
 
-    public void showInvoiceSummary(){
+    private void cero() {
+
+        int cantidad = getUserInput();
+
+        if (cantidad >= 2000) {
+            resultado += 2000;
+            incrementQuantity(2000, 1);
+        } else if (cantidad >= 1000) {
+            resultado += 1000;
+            incrementQuantity(1000, 1);
+        } else if (cantidad >= 500) {
+            resultado += 500;
+            incrementQuantity(500, 1);
+        } else if (cantidad >= 200) {
+            resultado += 200;
+            incrementQuantity(200, 1);
+        } else {
+            resultado += 100;
+            incrementQuantity(100, 1);
+        }
+    }
+
+    private void biggerThanCero() {
+
+        int cantidad = getUserInput();
+
+        if ((resultado + 2000) <= cantidad) {
+            resultado += 2000;
+            incrementQuantity(2000, 1);
+        } else if ((resultado + 1000) <= cantidad) {
+            resultado += 1000;
+            incrementQuantity(1000, 1);
+        } else if ((resultado + 500) <= cantidad) {
+            resultado += 500;
+            incrementQuantity(500, 1);
+        } else if ((resultado + 200) <= cantidad) {
+            resultado += 200;
+            incrementQuantity(200, 1);
+        } else {
+            resultado += 100;
+            incrementQuantity(100, 1);
+        }
+    }
+
+    private void printBills() {
+
+        for (int key : list.keySet()) {
+            System.out.printf("ENVIANDO %d PAPELETAS DE %d%n", list.get(key), key);
+        }
+    }
+
+    private void incrementQuantity(int ballot, int quantity) {
+
+        if (!list.containsKey(ballot)) list.put(ballot, quantity);
+        else list.put(ballot, list.get(ballot) + quantity);
 
     }
 }

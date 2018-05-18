@@ -13,7 +13,6 @@ public class Cajero {
             menu.showMenu();
             menu.setMenuInput();
             menu.doSomething();
-            menu.showInvoiceSummary();
         }
     }
 
